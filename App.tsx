@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Camera } from "expo-camera";
 import { Audio, Video } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
 import { shareAsync } from "expo-sharing";
+import CameraView from "./src/components/cameraView";
 
 export default function App() {
+  const cameraRef = useRef<Camera>(null);
+  const [isRecording, setIsRecording] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [hasMicrophonePermission, setHasMicrophonePermission] = useState(false);
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
@@ -32,9 +35,12 @@ export default function App() {
     return <Text>Você precisa dar acesso à biblioteca de media.</Text>;
   }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <CameraView
+      onRecording={onRecording}
+      onStopRecording={stopRecording}
+      cameraRef={cameraRef}
+      isRecording={isRecording}
+    />
   );
 }
 
