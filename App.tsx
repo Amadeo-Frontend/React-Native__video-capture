@@ -6,6 +6,7 @@ import { Audio, Video } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library';
 import { shareAsync } from 'expo-sharing';
 import CameraView from './src/components/cameraView';
+import VideoPlayer from './src/components/videoPlayer';
 
 export default function App() {
   const cameraRef = useRef<Camera>(null);
@@ -56,7 +57,19 @@ export default function App() {
       cameraRef.current.stopRecording();
     }
   };
+  if (video) {
+    const shareVideo = () => {};
 
+    const saveVideo = () => {};
+    return (
+      <VideoPlayer
+        video={video}
+        onShare={shareVideo}
+        onSave={saveVideo}
+        onDiscard={() => setVideo(undefined)}
+      />
+    );
+  }
   return (
     <CameraView
       onRecording={onRecording}
