@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Camera } from "expo-camera";
@@ -7,6 +7,30 @@ import * as MediaLibrary from "expo-media-library";
 import { shareAsync } from "expo-sharing";
 
 export default function App() {
+  const [hasCameraPermission, setHasCameraPermission] = useState(false);
+  const [hasMicrophonePermission, setHasMicrophonePermission] = useState(false);
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
+    useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const cameraPermission = await Camera.requestCameraPermissionsAsync();
+      const microphonePermission =
+        await Camera.requestMicrophonePermissionsAsync();
+      const mediaLibraryPermission =
+        await MediaLibrary.requestPermissionsAsync();
+      setHasCameraPermission(cameraPermission.status === "granted");
+      setHasMicrophonePermission(microphonePermission.status === "granted");
+      setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+    })();
+  }, []);
+  if (hasCameraPermission === false || hasMicrophonePermission === false) {
+    return <Text>Não tem permisão de camera ou audio.</Text>;
+  }
+
+  if (hasMediaLibraryPermission === false) {
+    return <Text>Você precisa dar acesso à biblioteca de media.</Text>;
+  }
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
