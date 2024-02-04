@@ -57,25 +57,38 @@ export default function App() {
       cameraRef.current.stopRecording();
     }
   };
-  if (video) {
-    const shareVideo = () => {};
 
-    const saveVideo = () => {};
+  if (video) {
+    const saveVideo = () => {
+      MediaLibrary.saveToLibraryAsync(video.uri).then(() => {
+        setVideo(undefined);
+      });
+    };
+    const shareVideo = () => {
+      shareAsync(video.uri).then(() => {
+        setVideo(undefined);
+      });
+    };
+
+    const discardVideo = () => {
+      setVideo(undefined);
+    };
+
     return (
       <VideoPlayer
         video={video}
         onShare={shareVideo}
         onSave={saveVideo}
-        onDiscard={() => setVideo(undefined)}
+        onDiscard={discardVideo}
       />
     );
   }
   return (
     <CameraView
-      onRecording={onRecording}
-      onStopRecording={stopRecording}
       cameraRef={cameraRef}
       isRecording={isRecording}
+      onRecord={recordVideo}
+      onStopRecording={stopRecording}
     />
   );
 }
