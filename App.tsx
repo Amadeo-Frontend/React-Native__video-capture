@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { Text } from 'react-native';
 import { Camera, CameraRecordingOptions } from 'expo-camera';
-import { Audio, Video } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library';
 import { shareAsync } from 'expo-sharing';
 import CameraView from './src/components/cameraView';
@@ -12,62 +10,86 @@ export default function App() {
   const cameraRef = useRef<Camera>(null);
   const [video, setVideo] = useState<any>();
   const [isRecording, setIsRecording] = useState(false);
-  const [hasCameraPermission, setHasCameraPermission] = useState(false);
-  const [hasMicrophonePermission, setHasMicrophonePermission] = useState(false);
-  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
-    useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    boolean | null
+  >(null);
+  const [hasMicrophonePermission, setHasMicrophonePermission] = useState<
+    boolean | null
+  >(null);
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState<
+    boolean | null
+  >(null);
 
   useEffect(() => {
-    (async () => {
+    const getPermissions = async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
       const microphonePermission =
         await Camera.requestMicrophonePermissionsAsync();
       const mediaLibraryPermission =
         await MediaLibrary.requestPermissionsAsync();
+
       setHasCameraPermission(cameraPermission.status === 'granted');
       setHasMicrophonePermission(microphonePermission.status === 'granted');
       setHasMediaLibraryPermission(mediaLibraryPermission.status === 'granted');
-    })();
+    };
+
+    getPermissions();
   }, []);
+
   if (hasCameraPermission === false || hasMicrophonePermission === false) {
-    return <Text>Não tem permisão de camera ou audio.</Text>;
+    return <Text>Não tem permissão de câmera ou áudio.</Text>;
   }
 
   if (hasMediaLibraryPermission === false) {
-    return <Text>Você precisa dar acesso à biblioteca de media.</Text>;
+    return <Text>Você precisa dar acesso à biblioteca de mídia.</Text>;
   }
 
-  const recordVideo = () => {
+  const recordVideo = async () => {
     setIsRecording(true);
+
     const options: CameraRecordingOptions = {
       quality: '1080p',
       maxDuration: 60,
       mute: false,
     };
-    if (cameraRef && cameraRef.current) {
-      cameraRef.current.recordAsync(options).then((recordedVideo: any) => {
+
+    try {
+      if (cameraRef && cameraRef.current) {
+        const recordedVideo = await cameraRef.current.recordAsync(options);
         setVideo(recordedVideo);
-        setIsRecording(false);
-      });
+      }
+    } catch (error) {
+      console.error('Erro ao gravar vídeo:', error);
+    } finally {
+      setIsRecording(false);
     }
   };
+
   const stopRecording = () => {
     setIsRecording(false);
+
     if (cameraRef && cameraRef.current) {
       cameraRef.current.stopRecording();
     }
   };
 
   if (video) {
-    const saveVideo = () => {
-      MediaLibrary.saveToLibraryAsync(video.uri).then(() => {
+    const saveVideo = async () => {
+      try {
+        await MediaLibrary.saveToLibraryAsync(video.uri);
         setVideo(undefined);
-      });
+      } catch (error) {
+        console.error('Erro ao salvar vídeo na biblioteca:', error);
+      }
     };
-    const shareVideo = () => {
-      shareAsync(video.uri).then(() => {
+
+    const shareVideo = async () => {
+      try {
+        await shareAsync(video.uri);
         setVideo(undefined);
-      });
+      } catch (error) {
+        console.error('Erro ao compartilhar vídeo:', error);
+      }
     };
 
     const discardVideo = () => {
@@ -83,6 +105,7 @@ export default function App() {
       />
     );
   }
+
   return (
     <CameraView
       cameraRef={cameraRef}
