@@ -1,19 +1,19 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   btnText: {
-    color: "#000",
+    color: '#000',
   },
   btnContainer: {
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
   btnRecord: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 2,
     padding: 10,
     borderRadius: 5,

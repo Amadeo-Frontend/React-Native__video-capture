@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
-import { styles } from "./styles";
-import { CameraViewProps } from "./props";
-import { Camera } from "expo-camera";
+import { styles } from './styles';
+import { CameraViewProps } from './props';
+import { Camera } from 'expo-camera';
 
 export default function CameraView({
   cameraRef,
@@ -18,7 +18,7 @@ export default function CameraView({
           style={styles.btnRecord}
           onPress={isRecording ? onStopRecording : onRecording}
         >
-          <Text style={styles.btnText}>{isRecording ? "Stop" : "Start"}</Text>
+          <Text style={styles.btnText}>{isRecording ? 'Stop' : 'Start'}</Text>
         </TouchableOpacity>
       </View>
     </Camera>

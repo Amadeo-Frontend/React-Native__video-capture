@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { Camera } from "expo-camera";
-import { Audio, Video } from "expo-av";
-import * as MediaLibrary from "expo-media-library";
-import { shareAsync } from "expo-sharing";
-import CameraView from "./src/components/cameraView";
+import { Camera, CameraRecordingOptions } from 'expo-camera';
+import { Audio, Video } from 'expo-av';
+import * as MediaLibrary from 'expo-media-library';
+import { shareAsync } from 'expo-sharing';
+import CameraView from './src/components/cameraView';
 
 export default function App() {
   const cameraRef = useRef<Camera>(null);
+  const [video, setVideo] = useState<any>();
   const [isRecording, setIsRecording] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [hasMicrophonePermission, setHasMicrophonePermission] = useState(false);
@@ -22,9 +23,9 @@ export default function App() {
         await Camera.requestMicrophonePermissionsAsync();
       const mediaLibraryPermission =
         await MediaLibrary.requestPermissionsAsync();
-      setHasCameraPermission(cameraPermission.status === "granted");
-      setHasMicrophonePermission(microphonePermission.status === "granted");
-      setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+      setHasCameraPermission(cameraPermission.status === 'granted');
+      setHasMicrophonePermission(microphonePermission.status === 'granted');
+      setHasMediaLibraryPermission(mediaLibraryPermission.status === 'granted');
     })();
   }, []);
   if (hasCameraPermission === false || hasMicrophonePermission === false) {
@@ -34,6 +35,28 @@ export default function App() {
   if (hasMediaLibraryPermission === false) {
     return <Text>Você precisa dar acesso à biblioteca de media.</Text>;
   }
+
+  const recordVideo = () => {
+    setIsRecording(true);
+    const options: CameraRecordingOptions = {
+      quality: '1080p',
+      maxDuration: 60,
+      mute: false,
+    };
+    if (cameraRef && cameraRef.current) {
+      cameraRef.current.recordAsync(options).then((recordedVideo: any) => {
+        setVideo(recordedVideo);
+        setIsRecording(false);
+      });
+    }
+  };
+  const stopRecording = () => {
+    setIsRecording(false);
+    if (cameraRef && cameraRef.current) {
+      cameraRef.current.stopRecording();
+    }
+  };
+
   return (
     <CameraView
       onRecording={onRecording}
@@ -43,12 +66,3 @@ export default function App() {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
