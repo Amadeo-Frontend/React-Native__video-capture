@@ -27,10 +27,10 @@ export default function VideoPlayer({
           <Ionicons name="share-sharp" size={40} color={colors.secundary} />
         </Pressable>
         <Pressable onPress={onSave}>
-          <Ionicons name="clipboard-sharp" size={40} color={colors.secundary} />
+          <Ionicons name="clipboard-sharp" size={40} color={colors.primary} />
         </Pressable>
         <Pressable onPress={onDiscard}>
-          <Ionicons name="trash-sharp" size={40} color={colors.secundary} />
+          <Ionicons name="trash-sharp" size={40} color={colors.accent} />
         </Pressable>
       </View>
     </SafeAreaView>

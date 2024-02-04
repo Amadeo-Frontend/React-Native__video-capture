@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { styles } from './styles';
 import { CameraViewProps } from './props';
 import { Camera } from 'expo-camera';
+import colors from '../../constants/Colors';
 
 export default function CameraView({
   cameraRef,
@@ -18,7 +20,11 @@ export default function CameraView({
           style={styles.btnRecord}
           onPress={isRecording ? onStopRecording : onRecord}
         >
-          <Text style={styles.btnText}>{isRecording ? 'Stop' : 'Start'}</Text>
+          <Ionicons
+            name={isRecording ? 'stop-circle' : 'play-circle'}
+            size={60}
+            color={colors.accent}
+          />
         </TouchableOpacity>
       </View>
     </Camera>

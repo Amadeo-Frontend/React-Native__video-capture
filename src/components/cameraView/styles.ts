@@ -10,12 +10,12 @@ export const styles = StyleSheet.create({
     color: '#000',
   },
   btnContainer: {
-    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    bottom: 0,
+    position: 'absolute',
+    marginBottom: 20,
   },
   btnRecord: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: 'transparent',
   },
 });
