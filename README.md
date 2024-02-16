@@ -1,8 +1,7 @@
 # Video Capture App
 
 O projeto consiste em um aplicativo React Native que utiliza a biblioteca Expo
-para gravar vídeos utilizando a câmera do dispositivo. O aplicativo permite
-alternar entre as câmeras frontal e traseira, gravar vídeos de até 60 segundos
+para gravar vídeos utilizando a câmera do dispositivo. O aplicativo permite gravar vídeos de até 60 segundos
 de duração, visualizar os vídeos gravados, salvar na biblioteca de mídia do
 dispositivo, compartilhar e descartar. A lógica de gravação e reprodução de
 vídeos é gerenciada por componentes específicos, como CameraView e VideoPlayer.
@@ -13,9 +12,6 @@ garantindo uma experiência fluida e segura para o usuário.
 
 - **Gravação de Vídeo:** Capture vídeos de alta qualidade com opção de até 60
   segundos de duração.
-
-- **Alternância de Câmera:** Troque entre as câmeras frontal e traseira para
-  diferentes perspectivas de gravação.
 
 - **Visualização e Ações:** Visualize os vídeos gravados, salve na biblioteca de
   mídia, compartilhe e descarte.
