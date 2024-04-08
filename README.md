@@ -16,8 +16,6 @@ garantindo uma experiência fluida e segura para o usuário.
 - **Visualização e Ações:** Visualize os vídeos gravados, salve na biblioteca de
   mídia, compartilhe e descarte.
 
-## Demonstração ▶
-
 ## 🎯 Instruções de Uso
 
 - Clone este repositório.
